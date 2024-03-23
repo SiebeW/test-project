@@ -1,10 +1,17 @@
+<script setup>
+import MainMenu from "@/views/MainMenu.vue";
+import { RouterView } from "vue-router";
+import { PokemonStore } from "@/stores/PokemonStore.ts";
+
+PokemonStore.fetchPokemon();
+</script>
+
 <template>
-  <!-- <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav> -->
-  <router-view/>
+  <MainMenu />
+  <main>
+    <RouterView />
+  </main>
 </template>
 
-<style>
+<style scoped>
 </style>

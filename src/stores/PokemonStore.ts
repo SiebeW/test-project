@@ -2,7 +2,7 @@ import { reactive } from 'vue';
 import Pokedex from 'pokedex-promise-v2';
 
 interface PokemonStoreInterface {
-    pokemon: any[];
+    pokemon: Pokedex.NamedAPIResource[];
     fetchPokemon: () => Promise<void>
 }
 

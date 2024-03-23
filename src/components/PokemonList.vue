@@ -1,3 +1,7 @@
+<script setup>
+import { PokemonStore } from '@/stores/PokemonStore.ts';
+</script>
+
 <template>
     <div>
         <ul>
@@ -8,11 +12,5 @@
     </div>
 </template>
 
-<script setup>
-import { Vue } from 'vue-class-component';
-import { PokemonStore } from '../stores/PokemonStore.ts';
-
-PokemonStore.fetchPokemon();
-</script>
 
 <style scoped></style>
