@@ -1,36 +1,18 @@
 <template>
     <div>
         <ul>
-            <li v-for="pkmn in pokemon" :key="pkmn.name">
+            <li v-for="pkmn in PokemonStore.pokemon" :key="pkmn.name">
                 {{ pkmn.name }}
             </li>
         </ul>
     </div>
 </template>
 
-<script>
-import Pokedex from 'pokedex-promise-v2';
-const P = new Pokedex();
-const original151 = {
-    limit: 151,
-    offset: 0
-}
+<script setup>
+import { Vue } from 'vue-class-component';
+import { PokemonStore } from '../stores/PokemonStore.ts';
 
-export default {
-    data() {
-        return {
-            pokemon: [],
-        };
-    },
-    async created() {
-        try {
-            const response = await P.getPokemonsList(original151);
-            this.pokemon = response.results;
-        } catch (error) {
-            console.error(error);
-        }
-    },
-};
+PokemonStore.fetchPokemon();
 </script>
 
 <style scoped></style>
