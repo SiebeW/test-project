@@ -3,7 +3,8 @@
 
 <template>
     <div>
-        Some content
+        Some content <br>
+        Pokemon ID: {{ $route.params.id }}
     </div>
 </template>
 
