@@ -11,4 +11,8 @@ import PokemonList from "@/components/PokemonList.vue";
 </template>
 
 <style scoped>
+nav {
+  margin: 1.5em;
+  width: calc(100% - 3em);
+}
 </style>
