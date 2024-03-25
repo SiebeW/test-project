@@ -7,10 +7,12 @@ PokemonStore.fetchPokemon();
 </script>
 
 <template>
-  <MainMenu />
-  <main>
-    <RouterView />
-  </main>
+  <div class="flex row">
+    <MainMenu />
+    <main>
+      <RouterView />
+    </main>
+  </div>
 </template>
 
 <style>
@@ -18,7 +20,6 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
 }
-
 .flex {
     display: flex;
 }
@@ -37,5 +38,8 @@ body {
 }
 .align-self-start {
   align-self: flex-start;
+}
+.justify-content-end {
+  justify-content: end;
 }
 </style>

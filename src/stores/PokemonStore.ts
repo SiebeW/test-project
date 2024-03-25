@@ -4,7 +4,11 @@ import { addPokemonToDb, getPokemonFromDb, lastDataUpdateTime } from './indexedD
 
 interface PokemonStoreInterface {
     pokemon: Pokedex.Pokemon[];
-    fetchPokemon: () => Promise<void>;
+    sorting: string,
+    filteredPokemon: Pokedex.Pokemon[],
+    sortPokemon: () => void,
+    fetchPokemon: () => Promise<void>,
+    filterPokemon: (query: string) => void;
 }
 
 const P = new Pokedex();
@@ -17,22 +21,37 @@ const cacheTime = 1000 * 60 * 60 * 24 * 7; // 1 week
 
 export const PokemonStore = reactive<PokemonStoreInterface>({
     pokemon: [],
+    sorting: 'numericalAsc',
+    filteredPokemon: [],
     async fetchPokemon() {
         try {
             const localPokemon = await getPokemonFromDb();
             const isStaleData = new Date().getTime() - cacheTime > (await lastDataUpdateTime());
-            if(localPokemon.length === 151 && !isStaleData) {
-                console.log("Using Cached Data");
+            if(localPokemon.length === pokemonFetchOptions.limit && !isStaleData) {
+                console.info("Accessing Pokemon from PC");
                 this.pokemon = localPokemon;
+                this.filteredPokemon = this.pokemon;
                 return;
             }
-            console.log("Fetching Fresh Data");
+            console.info("Retrieving fresh pokemon data");
             const apiListResponse = await P.getPokemonsList(pokemonFetchOptions);
             const allPokemonResponse = await P.getPokemonByName(apiListResponse.results.map((result) => result.name));
             this.pokemon = allPokemonResponse;
+            this.filteredPokemon = this.pokemon;
             addPokemonToDb(this.pokemon);
         } catch (err) {
             console.error(err);
         }
+    },
+    sortPokemon() {
+        // numericalAsc
+        // numericalDesc
+        // alphabeticalAsc
+        // alphabeticalDesc
+    },
+    filterPokemon(query: string) {
+        this.filteredPokemon = this.pokemon.filter((pkmn: Pokedex.Pokemon) => {
+            return pkmn.name.includes(query)
+        })
     }
 })
