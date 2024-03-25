@@ -16,7 +16,6 @@ import { TypeColors } from '@/stores/TypeColors.ts';
                     <div class="pkmn-types flex row ml-auto align-self-start">
                         <div v-for="type in pkmn.types" :key="type.slot"
                             class="pkmn-type"
-                            :class="[type.type.name]"
                             :style="'background-color: ' + [TypeColors[type.type.name]]">
                                 {{ type.type.name }}
                         </div>
@@ -33,6 +32,7 @@ import { TypeColors } from '@/stores/TypeColors.ts';
 p { margin: 0;}
 
 ul {
+    margin: 0;
     list-style-type: none;
 }
 
@@ -44,7 +44,7 @@ ul {
 
 .pkmn-list-container {
     display: grid;
-    padding: 0;
+    padding: 0 1em;
     gap: 0.5em;
     text-decoration: none;
 }
@@ -80,15 +80,8 @@ ul {
     color: rgba(0, 0, 0, 0.25)
 }
 .pkmn-types{
-    font-size: 0.9em;
+    margin-top: 0.25em;
     gap: 0.5em;
 }
-.pkmn-type {
-    padding: 0.25em 1em 0.35em;
-    border-radius: 1em;
-    margin-top: 0.25em;
-    color: white;
-}
-
 .cls-1{fill:none;stroke:#8b8b90;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;}
 </style>

@@ -6,14 +6,17 @@ const db = await openDB('pokemon',1, {
     upgrade(db) {
         try{
             db.deleteObjectStore('pokemon');
+            db.deleteObjectStore('species');
             db.deleteObjectStore('metadata');
         } catch (err) {
             console.log('Fresh database');
         }
 
         const pokemonObjectStore = db.createObjectStore('pokemon', { keyPath: 'id' });
+        const speciesObjectStore = db.createObjectStore('species', { keyPath: 'id' });
         db.createObjectStore('metadata');
         pokemonObjectStore.createIndex('name', 'name', { unique: true });
+        speciesObjectStore.createIndex('name', 'name', { unique: true });
     }
 });
 
@@ -50,11 +53,32 @@ export const getPokemonFromDbById = async (id: number) => {
     return request;
 };
 
+export type StoredPokemonSpecies = Pokedex.PokemonSpecies & { lastModified: number };
+
+export const addSpeciesToDb = async (species:Pokedex.PokemonSpecies): Promise<StoredPokemonSpecies> => {
+    const transaction = db.transaction(['species'], 'readwrite');
+    const objectStore = transaction.objectStore('species');
+    const speciesWithDate : StoredPokemonSpecies = {...species, lastModified: new Date().getTime()};
+    objectStore.put(toRaw(speciesWithDate));
+    await transaction.done;
+    return speciesWithDate;
+}
+
+export const getSpeciesFromDbById = async (id: number): Promise<StoredPokemonSpecies | undefined> => {
+    const transaction = db.transaction(['species'], 'readonly');
+    const objectStore = transaction.objectStore('species');
+    const request = objectStore.get(id);
+    await transaction.done;
+    return request;
+}
+
 export const clearPokemonDb = async () => {
     const transaction = db.transaction(['pokemon', 'metadata'], 'readwrite');
     const pokemonObjectStore = transaction.objectStore('pokemon');
     const metadataObjectStore = transaction.objectStore('metadata');
+    const speciesObjectStore = transaction.objectStore('species');
     pokemonObjectStore.clear();
     metadataObjectStore.clear();
+    speciesObjectStore.clear();
     await transaction.done;
 }
