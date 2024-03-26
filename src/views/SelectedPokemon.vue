@@ -32,7 +32,7 @@ function checkPokemonLoadState() {
     if(PokemonStore.pokemon == null || PokemonStore.pokemon.length === 0) {
         window.setTimeout(checkPokemonLoadState,50);
     } else {
-        PokemonStore.selectPokemon(PokemonStore.pokemon[route.params.id - 1])
+        PokemonStore.selectPokemon(PokemonStore.pokemon.find((pkmn) => pkmn.id === Number(route.params.id)))
     }
 }
 
@@ -74,7 +74,7 @@ function newImageArray(object) {
 watch(
     () => route.params.id,
     async id => {
-        PokemonStore.selectPokemon(PokemonStore.pokemon[id - 1])
+        PokemonStore.selectPokemon(PokemonStore.pokemon.find((pkmn) => pkmn.id === Number(id)))
     }
 )
 
@@ -108,7 +108,7 @@ function pokemonCategory() {
         <!-- portrait component -->
         <section class="portrait-carousel flex row">
             <svg @click="incrementSelectedImage('left')" :class="selectedImage === selectionLimits.min ? 'arrow-disabled' : ''" class="arrow-left arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7.31 13.01" width="15px" height="20px"><g id="Layer_3"><polyline class="cls-1" points=".85 .75 6.56 6.45 .75 12.26"/></g></svg>
-            <div v-for="(img, index) in newImageArray(PokemonStore.selectedPokemon.sprites)" :key="PokemonStore.selectedPokemon.name + img.id" :id="index" :class="index === selectedImage ? 'selected' : index > selectedImage.value ? 'next-image' : 'prev-image'">
+            <div v-for="(img, index) in newImageArray(PokemonStore.selectedPokemon.sprites)" :key="PokemonStore.selectedPokemon.name + img.id + index" :id="index" :class="index === selectedImage ? 'selected' : index > selectedImage.value ? 'next-image' : 'prev-image'">
                 <img v-if="img.value" :src="img.value" :alt="PokemonStore.selectedPokemon.name + ' ' + img.id + ' sprite'">
             </div>
             <svg @click="incrementSelectedImage('right')" :class="selectedImage === selectionLimits.max ? 'arrow-disabled' : ''" class="arrow-right arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7.31 13.01" width="15px" height="20px"><g id="Layer_3"><polyline class="cls-1" points=".85 .75 6.56 6.45 .75 12.26"/></g></svg>
@@ -120,7 +120,6 @@ function pokemonCategory() {
                 <tr>
                     <td colspan="3">
                         <p class="description">
-
                             {{ pokemonDescription() }}
                         </p>
                     </td>
@@ -186,7 +185,7 @@ function pokemonCategory() {
                     </td>
                     <td>
                         <table>
-                            <tr v-for="ability in PokemonStore.selectedPokemon.abilities" :key="ability.name + PokemonStore.selectedPokemon.name">
+                            <tr v-for="(ability, index) in PokemonStore.selectedPokemon.abilities" :key="index + PokemonStore.selectedPokemon.name">
                                 <td>
                                     {{ ability.ability.name.charAt(0).toUpperCase() + ability.ability.name.slice(1) }}
                                 </td>

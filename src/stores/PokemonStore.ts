@@ -57,7 +57,7 @@ export const PokemonStore = reactive<PokemonStoreInterface>({
         }
     },
     sortPokemon() {
-        sortByNum.value < 3 ? sortByNum.value++ :  sortByNum.value = 0
+        sortByNum.value < 3 ? sortByNum.value++ : sortByNum.value = 0
         let sortArray = [];
         switch (sortByNum.value) {
             case sortBy.numericalAsc:
@@ -110,6 +110,7 @@ export const PokemonStore = reactive<PokemonStoreInterface>({
         sortedPokemon.value = sortArray;
     },
     async selectPokemon(pkmn: Pokedex.Pokemon) {
+        if (!pkmn) return;
         const localSpecies = await getSpeciesFromDbById(pkmn.id);
         if(!localSpecies || new Date().getTime() - cacheTime > localSpecies.lastModified) {
             console.info("Fetching fresh species data");

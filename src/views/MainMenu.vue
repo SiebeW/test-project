@@ -44,7 +44,7 @@ nav {
   cursor: pointer;
   opacity: 0.5;
 }
-.filter-icon, .filter-icon:hover {
+#filter-icon, #filter-icon:hover {
   cursor: not-allowed;
   opacity: 0.12;
 }

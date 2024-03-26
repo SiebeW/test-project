@@ -49,14 +49,28 @@ function getTypeColor() {
 }
 
 .spinner-container {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
   z-index: 50;
   background-color: rgba(255, 255, 255, 0.75);
 }
 
 .spinner {
-  animation: rotation 1s linear infinite;
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;
+  animation: rotation 3s linear infinite;
 }
 
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    } 
 h1,
 h2,
 h3,
